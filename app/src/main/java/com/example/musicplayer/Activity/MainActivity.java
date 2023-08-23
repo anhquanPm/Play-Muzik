@@ -2,6 +2,7 @@ package com.example.musicplayer.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,10 +23,12 @@ import com.example.musicplayer.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends AppCompatActivity {
 
     Adapter adapter;
-    ImageView img_dia_nhac;
+    CircleImageView img_dia_nhac;
     TextView song_name, time_start, time_end;
     ImageButton next, play, back;
     SeekBar seekBar;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(R.string.app_name);
+            getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.pink));
         }
         animation = AnimationUtils.loadAnimation(this, R.anim.rotate);
         loadView();
@@ -61,11 +65,11 @@ public class MainActivity extends AppCompatActivity {
                     mediaPlayer = MediaPlayer.create(MainActivity.this, songArrayList.get(i).getFile());
                     song_name.setText(songArrayList.get(i).getNameSong());
                     mediaPlayer.start();
-//                    mediaPlayer.setLooping(true);
                     play.setBackgroundResource(R.drawable.baseline_pause_circle_24);
                     setTimeTotal();
                     upDateTime();
-                    img_dia_nhac.startAnimation(animation);
+                    starAnimation(index);
+//                    img_dia_nhac.startAnimation(animation);
 
 
             }
@@ -86,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
                     // neu dang dung nhac -> phat nhac -> doi hinh pause
                     mediaPlayer.start();
                     play.setBackgroundResource(R.drawable.baseline_pause_circle_24);
-                    img_dia_nhac.startAnimation(animation);
+                    starAnimation(index);
+//                    img_dia_nhac.startAnimation(animation);
                 }
                 setTimeTotal();
                 upDateTime();
@@ -111,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 khoiTaoMedia(i);
                 mediaPlayer.start();
+                starAnimation(i);
                 play.setBackgroundResource(R.drawable.baseline_pause_circle_24);
                 setTimeTotal();
                 upDateTime();
@@ -131,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 khoiTaoMedia(i);
                 mediaPlayer.start();
+                starAnimation(i);
                 play.setBackgroundResource(R.drawable.baseline_pause_circle_24);
                 setTimeTotal();
                 upDateTime();
@@ -231,5 +238,11 @@ public class MainActivity extends AppCompatActivity {
     private void khoiTaoMedia(int index) {
         mediaPlayer = MediaPlayer.create(MainActivity.this, songArrayList.get(index).getFile());
         song_name.setText(songArrayList.get(index).getNameSong());
+        mediaPlayer.setLooping(true);
+    }
+    private void starAnimation(int pos){
+        img_dia_nhac.setImageResource(songArrayList.get(pos).getPicture());
+        img_dia_nhac.startAnimation(animation);
+
     }
 }
